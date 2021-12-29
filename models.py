@@ -23,7 +23,7 @@ class BsUsers(models.Model):
     have_cottage = models.PositiveIntegerField("have_cottage", default=0)
     plan_cottage_works = models.PositiveIntegerField("plan_cottage_works", default=0)
     who_worker = models.PositiveIntegerField("who_worker", default=0)
-    who_chooser = models.PositiveIntegerField("who_chooser", default=0)
+    who_chooser = models.PositiveIntegerField("who_chooser", default=0) 
     who_buyer = models.CharField("who_buyer", max_length=150)
     where_buy_other = models.CharField("where_buy_other", max_length=150)
     shop_name = models.CharField("shop_name", max_length=150)
@@ -65,11 +65,8 @@ class UserRegistrationForm(forms.ModelForm):
         if request.method == 'POST':
             user_form = UserRegistrationForm(request.POST)
             if user_form.is_valid():
-                # Create a new user object but avoid saving it yet
                 new_user = user_form.save(commit=False)
-                # Set the chosen password
                 new_user.set_password(user_form.cleaned_data['password'])
-                # Save the User object
                 new_user.save()
                 return render(request, 'account/register_done.html', {'new_user': new_user})
         else:
@@ -114,7 +111,7 @@ class AnswerSerializer(serializers.Serializer):
     def save(self):
         answers = self.data['answers']
         user = self.context.user
-        for question_id, in answers:  # тут наверное лишняя запятая , ошибка в оригинальном коде
+        for question_id, in answers:  
             question = Question.objects.get(pk=question_id)
             choices = answers[question_id]
             for choice_id in choices:
